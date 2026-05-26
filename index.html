@@ -149,6 +149,86 @@
     margin-top: 5px;
   }
 
+  /* ── Character header ── */
+  .char-header {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    margin-bottom: 32px;
+    padding: 20px 24px;
+    border: 1px solid var(--border-dim);
+    background: rgba(13,11,8,0.5);
+    position: relative;
+  }
+  .char-header::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0;
+    width: 3px; height: 100%;
+  }
+  #malevola   .char-header::before { background: #c9a84c; }
+  #shadowheart .char-header::before { background: #4a90d9; }
+  #astarion   .char-header::before { background: #9b59b6; }
+  #karlach    .char-header::before { background: #c0392b; }
+
+  .char-icon {
+    width: 54px; height: 54px;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 24px;
+    flex-shrink: 0;
+    border: 2px solid;
+  }
+  #malevola   .char-icon { border-color: #c9a84c; background: rgba(201,168,76,0.08); }
+  #shadowheart .char-icon { border-color: #4a90d9; background: rgba(74,144,217,0.08); }
+  #astarion   .char-icon { border-color: #9b59b6; background: rgba(155,89,182,0.08); }
+  #karlach    .char-icon { border-color: #c0392b; background: rgba(192,57,43,0.08); }
+
+  .char-info { flex: 1; min-width: 0; }
+  .char-info h2 {
+    font-family: 'Cinzel', serif;
+    font-size: 22px;
+    color: var(--gold-light);
+    letter-spacing: 0.06em;
+    margin-bottom: 3px;
+  }
+  .char-build {
+    font-family: 'EB Garamond', serif;
+    font-size: 14px;
+    color: var(--text-dim);
+    font-style: italic;
+    margin-bottom: 8px;
+  }
+  .role-tags { display: flex; flex-wrap: wrap; gap: 5px; }
+  .role-tag {
+    font-family: 'Cinzel', serif;
+    font-size: 9px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: 2px 8px;
+    border: 1px solid;
+  }
+  #malevola   .role-tag { color: #c9a84c; border-color: rgba(201,168,76,0.35); background: rgba(201,168,76,0.07); }
+  #shadowheart .role-tag { color: #4a90d9; border-color: rgba(74,144,217,0.35); background: rgba(74,144,217,0.07); }
+  #astarion   .role-tag { color: #9b59b6; border-color: rgba(155,89,182,0.35); background: rgba(155,89,182,0.07); }
+  #karlach    .role-tag { color: #c0392b; border-color: rgba(192,57,43,0.35); background: rgba(192,57,43,0.07); }
+
+  .planner-link {
+    font-family: 'Cinzel', serif;
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--text-dim);
+    text-decoration: none;
+    border: 1px solid var(--border-dim);
+    padding: 7px 14px;
+    white-space: nowrap;
+    flex-shrink: 0;
+    align-self: flex-start;
+    transition: color 0.15s, border-color 0.15s;
+  }
+  .planner-link:hover { color: var(--gold); border-color: var(--gold-dim); }
+
   /* ── Cards ── */
   .card {
     background: var(--bg-card);
@@ -538,9 +618,19 @@
 
 <!-- ══════════════════════════════════════════ MALEVOLA ══════════════════════════════════════════ -->
 <section class="character-section panel active" id="malevola">
-  <div class="section-header">
-    <h2>Malevola</h2>
-    <div class="subtitle">Custom · Asmodeus Tiefling · Charlatan &nbsp;·&nbsp; Bard 10 / Warlock 2 (The Fiend) &nbsp;·&nbsp; Crowd control · debuffer · off-healer · face</div>
+  <div class="char-header">
+    <div class="char-icon">🎭</div>
+    <div class="char-info">
+      <h2>Malevola</h2>
+      <div class="char-build">Custom · Asmodeus Tiefling · Charlatan &nbsp;·&nbsp; Bard 10 / Warlock 2 (The Fiend)</div>
+      <div class="role-tags">
+        <span class="role-tag">Crowd Control</span>
+        <span class="role-tag">Debuffer</span>
+        <span class="role-tag">Off-Healer</span>
+        <span class="role-tag">Face</span>
+      </div>
+    </div>
+    <a href="https://bg3compendium.com/020b39cec6b0/builds/ox09mw05" target="_blank" class="planner-link">Full Build ↗</a>
   </div>
 
   <div class="card">
@@ -638,9 +728,19 @@
 
 <!-- ══════════════════════════════════════════ SHADOWHEART ══════════════════════════════════════════ -->
 <section class="character-section panel" id="shadowheart">
-  <div class="section-header">
-    <h2>Shadowheart</h2>
-    <div class="subtitle">Origin companion · High Half-Elf · Acolyte &nbsp;·&nbsp; Cleric 12 (Light Domain) · Deity: Selûne (respec at Withers) &nbsp;·&nbsp; Healer · support caster · radiant damage · party buffer</div>
+  <div class="char-header">
+    <div class="char-icon">🌙</div>
+    <div class="char-info">
+      <h2>Shadowheart</h2>
+      <div class="char-build">Origin companion · High Half-Elf · Acolyte &nbsp;·&nbsp; Cleric 12 (Light Domain) · Deity: Selûne (respec at Withers)</div>
+      <div class="role-tags">
+        <span class="role-tag">Healer</span>
+        <span class="role-tag">Support Caster</span>
+        <span class="role-tag">Radiant Damage</span>
+        <span class="role-tag">Party Buffer</span>
+      </div>
+    </div>
+    <a href="https://bg3compendium.com/020b39cec6b0/builds/q2id53gb" target="_blank" class="planner-link">Full Build ↗</a>
   </div>
 
   <div class="card">
@@ -732,9 +832,18 @@
 
 <!-- ══════════════════════════════════════════ ASTARION ══════════════════════════════════════════ -->
 <section class="character-section panel" id="astarion">
-  <div class="section-header">
-    <h2>Astarion</h2>
-    <div class="subtitle">Origin companion · High Elf · Charlatan &nbsp;·&nbsp; Ranger 5 / Rogue 4 / Fighter 3 &nbsp;·&nbsp; Gloom Stalker / Thief / Battle Master &nbsp;·&nbsp; Single-target burst · initiative · debuffer</div>
+  <div class="char-header">
+    <div class="char-icon">🏹</div>
+    <div class="char-info">
+      <h2>Astarion</h2>
+      <div class="char-build">Origin companion · High Elf · Charlatan &nbsp;·&nbsp; Ranger 5 / Rogue 4 / Fighter 3 &nbsp;·&nbsp; Gloom Stalker / Thief / Battle Master</div>
+      <div class="role-tags">
+        <span class="role-tag">Burst Damage</span>
+        <span class="role-tag">Initiative Control</span>
+        <span class="role-tag">Debuffer</span>
+      </div>
+    </div>
+    <a href="https://bg3compendium.com/020b39cec6b0/builds/5qt330bv" target="_blank" class="planner-link">Full Build ↗</a>
   </div>
 
   <div class="card">
@@ -825,9 +934,18 @@
 
 <!-- ══════════════════════════════════════════ KARLACH ══════════════════════════════════════════ -->
 <section class="character-section panel" id="karlach">
-  <div class="section-header">
-    <h2>Karlach</h2>
-    <div class="subtitle">Origin companion · Zariel Tiefling (locked) · Outlander &nbsp;·&nbsp; Monk 9 (Open Hand) / Rogue 3 (Thief) &nbsp;·&nbsp; Frontline bruiser · crowd controller · sustained melee damage</div>
+  <div class="char-header">
+    <div class="char-icon">🔥</div>
+    <div class="char-info">
+      <h2>Karlach</h2>
+      <div class="char-build">Origin companion · Zariel Tiefling (locked) · Outlander &nbsp;·&nbsp; Monk 9 (Open Hand) / Rogue 3 (Thief)</div>
+      <div class="role-tags">
+        <span class="role-tag">Frontline Bruiser</span>
+        <span class="role-tag">Crowd Control</span>
+        <span class="role-tag">Sustained Damage</span>
+      </div>
+    </div>
+    <a href="https://bg3compendium.com/020b39cec6b0/builds/v7q7m8r3" target="_blank" class="planner-link">Full Build ↗</a>
   </div>
 
   <div class="card">
