@@ -1,0 +1,1255 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Malevola's Company — BG3 Tactician/Honour Mode Guide</title>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg: #1a1a1a;
+    --bg-card: #222222;
+    --text: #c8a96e;
+    --text-dim: #8a7555;
+    --gold: #e8bc5a;
+    --gold-dim: #a07830;
+    --border: #3a3020;
+    --act1: rgba(50, 90, 50, 0.25);
+    --act2: rgba(90, 70, 20, 0.3);
+    --act3: rgba(70, 40, 110, 0.3);
+    --act1-border: rgba(80, 140, 80, 0.4);
+    --act2-border: rgba(160, 120, 40, 0.4);
+    --act3-border: rgba(130, 80, 200, 0.4);
+    --missable: #cc4422;
+    --missable-bg: rgba(204, 68, 34, 0.12);
+    --callout-yellow-bg: rgba(220, 180, 50, 0.1);
+    --callout-yellow-border: rgba(220, 180, 50, 0.4);
+    --nav-height: 52px;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Segoe UI', system-ui, sans-serif;
+    font-size: 14px;
+    line-height: 1.6;
+  }
+
+  /* ── Nav ── */
+  nav {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: #0f0f0f;
+    border-bottom: 2px solid var(--gold-dim);
+    display: flex;
+    align-items: center;
+    height: var(--nav-height);
+    padding: 0 24px;
+    gap: 6px;
+    overflow-x: auto;
+  }
+
+  nav .title {
+    color: var(--gold);
+    font-size: 15px;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    margin-right: 12px;
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+
+  nav .sep {
+    color: var(--border);
+    font-size: 18px;
+    flex-shrink: 0;
+    margin: 0 4px;
+  }
+
+  nav a {
+    color: var(--text-dim);
+    text-decoration: none;
+    padding: 6px 13px;
+    border-radius: 4px;
+    font-size: 13px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    white-space: nowrap;
+    transition: color 0.15s, background 0.15s;
+  }
+
+  nav a:hover { color: var(--gold); background: rgba(232,188,90,0.1); }
+
+  /* ── Layout ── */
+  main {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 32px 24px;
+  }
+
+  [id] { scroll-margin-top: calc(var(--nav-height) + 16px); }
+
+  .character-section { margin-bottom: 80px; }
+
+  .section-header {
+    border-bottom: 2px solid var(--gold-dim);
+    padding-bottom: 12px;
+    margin-bottom: 28px;
+  }
+
+  .section-header h2 {
+    font-size: 26px;
+    color: var(--gold);
+    letter-spacing: 0.05em;
+  }
+
+  .section-header .subtitle {
+    color: var(--text-dim);
+    font-size: 13px;
+    margin-top: 4px;
+  }
+
+  /* ── Cards ── */
+  .card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 20px;
+    margin-bottom: 20px;
+  }
+
+  .card h3 {
+    color: var(--gold);
+    font-size: 13px;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin-bottom: 14px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  /* ── Stat block ── */
+  .stat-grid {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    gap: 8px;
+    margin-bottom: 14px;
+  }
+
+  .stat-box {
+    background: #1a1a1a;
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    text-align: center;
+    padding: 8px 4px;
+  }
+
+  .stat-box .label {
+    font-size: 10px;
+    text-transform: uppercase;
+    color: var(--text-dim);
+    letter-spacing: 0.1em;
+  }
+
+  .stat-box .value {
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--gold);
+    line-height: 1.2;
+  }
+
+  .stat-box .mod { font-size: 11px; color: var(--text-dim); }
+
+  .meta-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 12px;
+  }
+
+  .meta-pill {
+    background: #1a1a1a;
+    border: 1px solid var(--border);
+    border-radius: 3px;
+    padding: 4px 10px;
+    font-size: 12px;
+  }
+
+  .meta-pill .key { color: var(--text-dim); margin-right: 4px; }
+
+  .note {
+    font-size: 12px;
+    color: var(--text-dim);
+    font-style: italic;
+    margin-top: 10px;
+    padding-top: 10px;
+    border-top: 1px solid var(--border);
+    line-height: 1.5;
+  }
+
+  /* ── Tables ── */
+  .table-wrap { overflow-x: auto; margin-bottom: 4px; }
+
+  table { width: 100%; border-collapse: collapse; font-size: 13px; }
+
+  thead th {
+    background: #111;
+    color: var(--gold);
+    text-align: left;
+    padding: 10px 12px;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    border-bottom: 1px solid var(--gold-dim);
+    white-space: nowrap;
+  }
+
+  tbody tr { border-bottom: 1px solid rgba(58,48,32,0.5); }
+  tbody tr:hover { background: rgba(232,188,90,0.04); }
+  tbody td { padding: 9px 12px; vertical-align: top; color: var(--text); }
+  tbody td:first-child { color: var(--gold); font-weight: 600; white-space: nowrap; }
+
+  /* Act color rows */
+  .act1-row { background: var(--act1); }
+  .act2-row { background: var(--act2); }
+  .act3-row { background: var(--act3); }
+
+  .act-label {
+    display: inline-block;
+    font-size: 10px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    padding: 2px 7px;
+    border-radius: 3px;
+    margin-right: 4px;
+    vertical-align: middle;
+  }
+
+  .act-label.a1 { background: var(--act1-border); color: #90c890; }
+  .act-label.a2 { background: var(--act2-border); color: #d4a830; }
+  .act-label.a3 { background: var(--act3-border); color: #c090f0; }
+
+  /* Inline tags */
+  .feat-tag {
+    display: inline-block;
+    background: rgba(232,188,90,0.2);
+    color: var(--gold);
+    font-size: 10px;
+    font-weight: 700;
+    text-transform: uppercase;
+    padding: 1px 6px;
+    border-radius: 3px;
+    border: 1px solid rgba(232,188,90,0.3);
+    margin-right: 4px;
+    vertical-align: middle;
+  }
+
+  .subclass-tag {
+    display: inline-block;
+    background: rgba(120,80,200,0.2);
+    color: #c0a0f0;
+    font-size: 10px;
+    font-weight: 700;
+    text-transform: uppercase;
+    padding: 1px 6px;
+    border-radius: 3px;
+    border: 1px solid rgba(120,80,200,0.35);
+    margin-right: 4px;
+    vertical-align: middle;
+  }
+
+  .warn-badge {
+    display: inline-block;
+    background: var(--missable);
+    color: #fff;
+    font-size: 10px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    padding: 2px 6px;
+    border-radius: 3px;
+    margin-left: 6px;
+    vertical-align: middle;
+  }
+
+  .feat-row td { background: rgba(232,188,90,0.04); }
+
+  /* ── Callouts ── */
+  .callout-warn {
+    background: var(--missable-bg);
+    border: 1px solid var(--missable);
+    border-left: 4px solid var(--missable);
+    border-radius: 4px;
+    padding: 18px 20px;
+    margin-bottom: 20px;
+  }
+
+  .callout-warn h3 {
+    color: #ff7755;
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin-bottom: 12px;
+  }
+
+  .callout-warn ul { list-style: none; padding: 0; }
+
+  .callout-warn ul li {
+    padding: 6px 0;
+    border-bottom: 1px solid rgba(204,68,34,0.15);
+    font-size: 13px;
+  }
+
+  .callout-warn ul li:last-child { border-bottom: none; }
+
+  .callout-warn .item-name { color: #ff9977; font-weight: 600; }
+
+  .callout-warn .item-detail {
+    color: var(--text-dim);
+    font-size: 12px;
+    display: block;
+    margin-top: 2px;
+    line-height: 1.5;
+  }
+
+  .callout-yellow {
+    background: var(--callout-yellow-bg);
+    border: 1px solid var(--callout-yellow-border);
+    border-left: 4px solid var(--gold);
+    border-radius: 4px;
+    padding: 18px 20px;
+    margin-bottom: 20px;
+  }
+
+  .callout-yellow h3 {
+    color: var(--gold);
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin-bottom: 12px;
+  }
+
+  /* ── Tactics ── */
+  .tactics ul { list-style: none; padding: 0; }
+
+  .tactics ul li {
+    padding: 6px 0 6px 18px;
+    position: relative;
+    border-bottom: 1px solid rgba(58,48,32,0.3);
+    font-size: 13px;
+    line-height: 1.6;
+  }
+
+  .tactics ul li::before {
+    content: '▸';
+    position: absolute;
+    left: 0;
+    color: var(--gold-dim);
+  }
+
+  .tactics ul li:last-child { border-bottom: none; }
+
+  /* ── Missables checklist ── */
+  .missables-act { margin-bottom: 28px; }
+
+  .missables-act h4 {
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--gold);
+    margin-bottom: 10px;
+    margin-top: 20px;
+    padding: 6px 0;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .missables-act h4:first-child { margin-top: 0; }
+
+  .missable-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 10px 14px;
+    border-radius: 4px;
+    margin-bottom: 6px;
+    background: #1e1e1e;
+    border: 1px solid var(--border);
+    transition: background 0.15s;
+  }
+
+  .missable-item:hover { background: #262626; }
+
+  .missable-item.checked { opacity: 0.35; }
+  .missable-item.checked .missable-content { text-decoration: line-through; }
+
+  .missable-item input[type="checkbox"] {
+    margin-top: 3px;
+    flex-shrink: 0;
+    width: 15px;
+    height: 15px;
+    accent-color: var(--gold);
+    cursor: pointer;
+  }
+
+  .missable-content { flex: 1; }
+
+  .missable-item .item-title { font-weight: 600; color: var(--gold); }
+
+  .item-char {
+    display: inline-block;
+    font-size: 10px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    padding: 1px 6px;
+    border-radius: 3px;
+    margin-left: 7px;
+    vertical-align: middle;
+  }
+
+  .char-mal { background: rgba(180,60,200,0.2); color: #d090e0; border: 1px solid rgba(180,60,200,0.4); }
+  .char-sh  { background: rgba(50,100,200,0.2); color: #80b0f0; border: 1px solid rgba(50,100,200,0.4); }
+  .char-ast { background: rgba(200,60,60,0.2);  color: #f09090; border: 1px solid rgba(200,60,60,0.4);  }
+  .char-kar { background: rgba(200,100,30,0.2); color: #e8a060; border: 1px solid rgba(200,100,30,0.4); }
+  .char-all { background: rgba(100,160,80,0.2); color: #a0d080; border: 1px solid rgba(100,160,80,0.4); }
+
+  .missable-item .item-desc {
+    font-size: 12px;
+    color: var(--text-dim);
+    margin-top: 3px;
+    line-height: 1.5;
+  }
+
+  .reset-btn {
+    background: none;
+    border: 1px solid var(--border);
+    color: var(--text-dim);
+    padding: 6px 14px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 12px;
+    margin-bottom: 20px;
+    transition: color 0.15s, border-color 0.15s;
+  }
+
+  .reset-btn:hover { color: var(--gold); border-color: var(--gold-dim); }
+
+  /* ── Synergy table ── */
+  .synergy-who { color: var(--text-dim); font-size: 12px; }
+
+  /* ── Responsive ── */
+  @media (max-width: 700px) {
+    .stat-grid { grid-template-columns: repeat(3, 1fr); }
+    main { padding: 16px 12px; }
+    nav { padding: 0 12px; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <span class="title">Malevola's Company</span>
+  <span class="sep">|</span>
+  <a href="#malevola">Malevola</a>
+  <a href="#shadowheart">Shadowheart</a>
+  <a href="#astarion">Astarion</a>
+  <a href="#karlach">Karlach</a>
+  <span class="sep">|</span>
+  <a href="#party">Party</a>
+</nav>
+
+<main>
+
+<!-- ══════════════════════════════════════════ MALEVOLA ══════════════════════════════════════════ -->
+<section class="character-section" id="malevola">
+  <div class="section-header">
+    <h2>Malevola</h2>
+    <div class="subtitle">Custom · Asmodeus Tiefling · Charlatan &nbsp;·&nbsp; Bard 10 / Warlock 2 (The Fiend) &nbsp;·&nbsp; Crowd control · debuffer · off-healer · face</div>
+  </div>
+
+  <div class="card">
+    <h3>Ability Scores</h3>
+    <div class="stat-grid">
+      <div class="stat-box"><div class="label">STR</div><div class="value">8</div><div class="mod">−1</div></div>
+      <div class="stat-box"><div class="label">DEX</div><div class="value">16</div><div class="mod">+3</div></div>
+      <div class="stat-box"><div class="label">CON</div><div class="value">14</div><div class="mod">+2</div></div>
+      <div class="stat-box"><div class="label">INT</div><div class="value">10</div><div class="mod">+0</div></div>
+      <div class="stat-box"><div class="label">WIS</div><div class="value">10</div><div class="mod">+0</div></div>
+      <div class="stat-box"><div class="label">CHA</div><div class="value">16</div><div class="mod">+3</div></div>
+    </div>
+    <div class="note">Base: STR 8, DEX 15+1, CON 14, INT 10, WIS 10, CHA 14+2 (racial) · L10 feat ASI +2 CHA (→18) · Ethel's Hair +1 CHA · Mirror of Loss +2 CHA (Act 3) → final CHA 21+</div>
+    <div class="meta-row">
+      <div class="meta-pill"><span class="key">Background skills:</span><span class="val">Deception, Sleight of Hand</span></div>
+      <div class="meta-pill"><span class="key">Bard L1:</span><span class="val">Persuasion, Insight, Perception</span></div>
+      <div class="meta-pill"><span class="key">Lore L5 bonus:</span><span class="val">Arcana, Stealth, Intimidation</span></div>
+      <div class="meta-pill"><span class="key">Expertise L5:</span><span class="val">Deception, Persuasion</span></div>
+      <div class="meta-pill"><span class="key">Expertise L12:</span><span class="val">Intimidation, Sleight of Hand</span></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>Level Progression</h3>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Lvl</th><th>Class</th><th>Key Gains</th></tr></thead>
+        <tbody>
+          <tr><td>1</td><td>Bard 1</td><td>Cantrips: Vicious Mockery, Minor Illusion · Spells: Healing Word, Faerie Fire, Tasha's Hideous Laughter, Thunderwave</td></tr>
+          <tr><td>2</td><td>Warlock 1 — The Fiend</td><td>Cantrips: Eldritch Blast, Bone Chill · Spells: Armour of Agathys, Hex · Feature: Dark One's Blessing</td></tr>
+          <tr><td>3</td><td>Warlock 2</td><td>Invocations: Agonising Blast, Devil's Sight · Spell: Command</td></tr>
+          <tr><td>4</td><td>Bard 2</td><td>Spell: Bane · Features: Song of Rest, Jack of All Trades</td></tr>
+          <tr class="feat-row"><td>5</td><td>Bard 3 <span class="subclass-tag">Lore</span></td><td>Subclass: College of Lore · Spell: Hold Person · Replace Thunderwave→Invisibility · Bonus skills: Arcana, Stealth, Intimidation · Expertise: Deception, Persuasion · Feature: Cutting Words</td></tr>
+          <tr class="feat-row"><td>6</td><td>Bard 4</td><td><span class="feat-tag">Feat</span> Alert (+5 initiative) · Cantrip: Mage Hand · Spell: Shatter</td></tr>
+          <tr><td>7</td><td>Bard 5</td><td>Spell: Hypnotic Pattern · Feature: Font of Inspiration</td></tr>
+          <tr class="feat-row"><td>8</td><td>Bard 6 <span class="subclass-tag">Lore</span></td><td>Magical Secrets: Counterspell + Hunger of Hadar · Spell: Fear · Replace Shatter→Glyph of Warding · Feature: Countercharm</td></tr>
+          <tr><td>9</td><td>Bard 7</td><td>Spell: Dimension Door · Replace Faerie Fire→Confusion</td></tr>
+          <tr class="feat-row"><td>10</td><td>Bard 8</td><td><span class="feat-tag">Feat</span> ASI +2 CHA (→18) · Spell: Polymorph · Replace Invisibility→Greater Invisibility</td></tr>
+          <tr><td>11</td><td>Bard 9</td><td>Spell: Dominate Person · Replace Hold Person→Hold Monster</td></tr>
+          <tr class="feat-row"><td>12</td><td>Bard 10</td><td>Cantrip: Blade Ward · Magical Secrets: Animate Dead + Slow · Spell: Blindness · Replace Tasha's→Greater Restoration · Expertise: Intimidation + Sleight of Hand</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>Equipment by Act</h3>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr><th>Slot</th><th><span class="act-label a1">Act 1</span></th><th><span class="act-label a2">Act 2</span></th><th><span class="act-label a3">Act 3</span></th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Head</td><td class="act1-row">Warped Headband of Intellect</td><td class="act2-row">Warped Headband of Intellect</td><td class="act3-row">Birthright <span class="warn-badge">buy early</span></td></tr>
+          <tr><td>Cloak</td><td class="act1-row">—</td><td class="act2-row">Cloak of Cunning Brume</td><td class="act3-row">Vivacious Cloak</td></tr>
+          <tr><td>Body</td><td class="act1-row">Blazer of Benevolence</td><td class="act2-row">Potent Robe</td><td class="act3-row">Potent Robe</td></tr>
+          <tr><td>Gloves</td><td class="act1-row">Daredevil Gloves</td><td class="act2-row">Daredevil Gloves</td><td class="act3-row">Quickspell Gloves</td></tr>
+          <tr><td>Boots</td><td class="act1-row">Boots of Aid and Comfort → Disintegrating Night Walkers (late)</td><td class="act2-row">Disintegrating Night Walkers</td><td class="act3-row">Disintegrating Night Walkers</td></tr>
+          <tr><td>Amulet</td><td class="act1-row">Amulet of Misty Step</td><td class="act2-row">Spellcrux Amulet</td><td class="act3-row">Amulet of Greater Health <span class="warn-badge">House of Hope</span></td></tr>
+          <tr><td>Ring 1</td><td class="act1-row">Ring of Protection</td><td class="act2-row">Ring of Protection</td><td class="act3-row">Ring of Protection</td></tr>
+          <tr><td>Ring 2</td><td class="act1-row">Ring of Absolute Force</td><td class="act2-row">Eversight Ring</td><td class="act3-row">Band of the Mystic Scoundrel</td></tr>
+          <tr><td>Ranged</td><td class="act1-row">Bow of Awareness</td><td class="act2-row">Darkfire Shortbow</td><td class="act3-row">Gontr Mael <span class="warn-badge">Steel Watch Foundry</span></td></tr>
+          <tr><td>Weapon</td><td class="act1-row">The Spellsparkler</td><td class="act2-row">The Spellsparkler</td><td class="act3-row">Markoheshkir <span class="warn-badge">Sorcerous Sundries vault</span></td></tr>
+          <tr><td>Shield</td><td class="act1-row">—</td><td class="act2-row">—</td><td class="act3-row">—</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="note">Warped Headband passes to Shadowheart in Act 3 when Malevola gets Birthright.</div>
+  </div>
+
+  <div class="callout-warn">
+    <h3>Permanent Bonuses &amp; Missables</h3>
+    <ul>
+      <li><span class="item-name">Auntie Ethel's Hair</span> → +1 CHA <span class="item-detail">Act 1, before fighting her. Let her take one eye, then REFUSE — she gives the hair. Do not kill her first.</span></li>
+      <li><span class="item-name">Necromancy of Thay</span> → Speak with Dead <span class="item-detail">Act 1, Blighted Village basement bookshelf. Requires Tome of Thay key from phase spider area.</span></li>
+      <li><span class="item-name">Loviatar's Love</span> → +2 attacks/saves below 30% HP <span class="item-detail">Act 1, let Abdirak beat you in goblin camp dungeon until you receive the buff.</span></li>
+      <li><span class="item-name">Find Familiar: Scratch</span> <span class="item-detail">Act 1, pet the dog near Blighted Village, find his owner's body, keep him.</span></li>
+      <li><span class="item-name">Survival Instinct</span> <span class="item-detail">Act 3.</span></li>
+      <li><span class="item-name">Mirror of Loss</span> → +2 CHA <span class="item-detail">Act 3, Gauntlet under House of Grief. Use Guidance + save scum. Do this first in the Mirror order.</span></li>
+    </ul>
+  </div>
+
+  <div class="card">
+    <h3>Combat Tactics</h3>
+    <div class="tactics">
+      <ul>
+        <li><strong>Turn 1:</strong> Hex (bonus action) + Eldritch Blast (action) for early reliable damage</li>
+        <li><strong>Mid-game:</strong> Hypnotic Pattern or Hunger of Hadar for crowd control; Cutting Words to protect allies</li>
+        <li><strong>Act 3:</strong> Greater Invisibility on Astarion before his nova turn; Animate Dead for summons; Slow to cripple enemy action economy</li>
+        <li>Hex competes with concentration spells — drop it once you have Hypnotic Pattern / Hunger of Hadar / Greater Invisibility available</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════ SHADOWHEART ══════════════════════════════════════════ -->
+<section class="character-section" id="shadowheart">
+  <div class="section-header">
+    <h2>Shadowheart</h2>
+    <div class="subtitle">Origin companion · High Half-Elf · Acolyte &nbsp;·&nbsp; Cleric 12 (Light Domain) · Deity: Selûne (respec at Withers) &nbsp;·&nbsp; Healer · support caster · radiant damage · party buffer</div>
+  </div>
+
+  <div class="card">
+    <h3>Ability Scores</h3>
+    <div class="stat-grid">
+      <div class="stat-box"><div class="label">STR</div><div class="value">8</div><div class="mod">−1</div></div>
+      <div class="stat-box"><div class="label">DEX</div><div class="value">15</div><div class="mod">+2</div></div>
+      <div class="stat-box"><div class="label">CON</div><div class="value">16</div><div class="mod">+3</div></div>
+      <div class="stat-box"><div class="label">INT</div><div class="value">8</div><div class="mod">−1</div></div>
+      <div class="stat-box"><div class="label">WIS</div><div class="value">17</div><div class="mod">+3</div></div>
+      <div class="stat-box"><div class="label">CHA</div><div class="value">8</div><div class="mod">−1</div></div>
+    </div>
+    <div class="note">Base: STR 8, DEX 15, CON 15+1, INT 8, WIS 15+2 (racial), CHA 8 · L4 War Caster · L8 ASI +2 WIS (→19) · L12 ASI +1 WIS +1 CON → WIS 20, CON 17 · Mirror of Loss +2 WIS → final WIS 22</div>
+    <div class="meta-row">
+      <div class="meta-pill"><span class="key">Skills:</span><span class="val">Insight, Religion (bg), History, Medicine</span></div>
+      <div class="meta-pill"><span class="key">Note:</span><span class="val">Perception NOT available to Clerics</span></div>
+      <div class="meta-pill"><span class="key">Cantrips:</span><span class="val">Blade Ward (racial), Sacred Flame, Guidance, Toll the Dead, Light (domain), Produce Flame (L4), Thaumaturgy (L10)</span></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>Level Progression</h3>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Lvl</th><th>Class</th><th>Key Gains</th></tr></thead>
+        <tbody>
+          <tr class="feat-row"><td>1</td><td>Cleric 1 <span class="subclass-tag">Light</span></td><td>Cantrips: Guidance, Sacred Flame, Toll the Dead · Domain: Burning Hands, Faerie Fire · Feature: Warding Flare</td></tr>
+          <tr><td>2</td><td>Cleric 2</td><td>Channel Divinity 1/SR · Features: Radiance of the Dawn, Turn Undead</td></tr>
+          <tr><td>3</td><td>Cleric 3</td><td>Domain spells: Flaming Sphere, Scorching Ray</td></tr>
+          <tr class="feat-row"><td>4</td><td>Cleric 4</td><td><span class="feat-tag">Feat</span> War Caster · Cantrip: Produce Flame</td></tr>
+          <tr><td>5</td><td>Cleric 5</td><td>Domain spells: Daylight, Fireball · Feature: Destroy Undead · Spirit Guardians always prepared</td></tr>
+          <tr><td>6</td><td>Cleric 6</td><td>Feature: Improved Warding Flare (works on allies) · Channel Divinity 2/SR</td></tr>
+          <tr><td>7</td><td>Cleric 7</td><td>Domain spells: Guardian of Faith, Wall of Fire</td></tr>
+          <tr class="feat-row"><td>8</td><td>Cleric 8</td><td><span class="feat-tag">Feat</span> ASI +2 WIS (17→19) · Feature: Potent Spellcasting</td></tr>
+          <tr><td>9</td><td>Cleric 9</td><td>Domain spells: Destructive Wave, Flame Strike</td></tr>
+          <tr><td>10</td><td>Cleric 10</td><td>Feature: Divine Intervention (once per game) · Cantrip: Thaumaturgy</td></tr>
+          <tr><td>11</td><td>Cleric 11</td><td>6th level spells — always prepare: Heal (70 HP single target, no concentration), Heroes' Feast</td></tr>
+          <tr class="feat-row"><td>12</td><td>Cleric 12</td><td><span class="feat-tag">Feat</span> ASI +1 WIS +1 CON (WIS→20, CON→17)</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>Equipment by Act</h3>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr><th>Slot</th><th><span class="act-label a1">Act 1</span></th><th><span class="act-label a2">Act 2</span></th><th><span class="act-label a3">Act 3</span></th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Head</td><td class="act1-row">Holy Lance Helm</td><td class="act2-row">Holy Lance Helm</td><td class="act3-row">Warped Headband of Intellect (from Malevola)</td></tr>
+          <tr><td>Cloak</td><td class="act1-row">—</td><td class="act2-row">Cloak of Protection → Vivacious Cloak (late)</td><td class="act3-row">Cloak of Displacement</td></tr>
+          <tr><td>Body</td><td class="act1-row">Luminous Armour</td><td class="act2-row">Luminous Armour</td><td class="act3-row">Luminous Armour</td></tr>
+          <tr><td>Gloves</td><td class="act1-row">Gloves of Belligerent Skies</td><td class="act2-row">Gloves of Belligerent Skies</td><td class="act3-row">The Reviving Hands</td></tr>
+          <tr><td>Boots</td><td class="act1-row">Vital Conduit Boots</td><td class="act2-row">Vital Conduit Boots</td><td class="act3-row">Vital Conduit Boots</td></tr>
+          <tr><td>Amulet</td><td class="act1-row">Broodmother's Revenge</td><td class="act2-row">Spineshudder Amulet</td><td class="act3-row">Amulet of the Devout</td></tr>
+          <tr><td>Ring 1</td><td class="act1-row">The Whispering Promise</td><td class="act2-row">Coruscation Ring</td><td class="act3-row">Ring of Regeneration <span class="warn-badge">buy early</span></td></tr>
+          <tr><td>Ring 2</td><td class="act1-row">Ring of Protection</td><td class="act2-row">Whispering Promise → Ring of Free Action (mid) → Callous Glow Ring (late)</td><td class="act3-row">Callous Glow Ring</td></tr>
+          <tr><td>Shield</td><td class="act1-row">Adamantine Shield</td><td class="act2-row">Shield of Devotion</td><td class="act3-row">Viconia's Walking Fortress <span class="warn-badge">House of Grief</span></td></tr>
+          <tr><td>Weapon</td><td class="act1-row">The Blood of Lathander</td><td class="act2-row">The Blood of Lathander</td><td class="act3-row">The Blood of Lathander</td></tr>
+          <tr><td>Ranged</td><td class="act1-row">Spellthief</td><td class="act2-row">Spellthief</td><td class="act3-row">—</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="note">Haste Helm: used very early Act 1, passes to Karlach after Rosymorn / Holy Lance Helm. Cloak of Protection passes to Karlach late Act 2. Ring of Free Action passes to Karlach Act 3.</div>
+  </div>
+
+  <div class="callout-warn">
+    <h3>Permanent Bonuses &amp; Missables</h3>
+    <ul>
+      <li><span class="item-name">Mirror of Loss</span> → +2 WIS → final WIS 22 <span class="item-detail">Act 3, Gauntlet under House of Grief. Use Guidance + save scum. Do this second in the Mirror order.</span></li>
+    </ul>
+  </div>
+
+  <div class="card">
+    <h3>Combat Tactics</h3>
+    <div class="tactics">
+      <ul>
+        <li><strong>Concentration:</strong> Spirit Guardians for melee fights; Flaming Sphere for ranged. War Caster feat maintains concentration under fire.</li>
+        <li><strong>Channel Divinity — Radiance of the Dawn:</strong> AoE radiant damage + synergy with Callous Glow Ring (enemies take 2 extra radiant when illuminated)</li>
+        <li><strong>Improved Warding Flare:</strong> reaction to impose disadvantage on attacks against ANY ally — use every round, constantly</li>
+        <li><strong>Heroes' Feast:</strong> cast before every major fight — immunity to fear/poison, +15 max HP, advantage on WIS saves for entire party</li>
+        <li><strong>Heal (70 HP, no concentration, no save):</strong> emergency button when someone is near death</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════ ASTARION ══════════════════════════════════════════ -->
+<section class="character-section" id="astarion">
+  <div class="section-header">
+    <h2>Astarion</h2>
+    <div class="subtitle">Origin companion · High Elf · Charlatan &nbsp;·&nbsp; Ranger 5 / Rogue 4 / Fighter 3 &nbsp;·&nbsp; Gloom Stalker / Thief / Battle Master &nbsp;·&nbsp; Single-target burst · initiative · debuffer</div>
+  </div>
+
+  <div class="card">
+    <h3>Ability Scores</h3>
+    <div class="stat-grid">
+      <div class="stat-box"><div class="label">STR</div><div class="value">8</div><div class="mod">−1</div></div>
+      <div class="stat-box"><div class="label">DEX</div><div class="value">17</div><div class="mod">+3</div></div>
+      <div class="stat-box"><div class="label">CON</div><div class="value">16</div><div class="mod">+3</div></div>
+      <div class="stat-box"><div class="label">INT</div><div class="value">10</div><div class="mod">+0</div></div>
+      <div class="stat-box"><div class="label">WIS</div><div class="value">13</div><div class="mod">+1</div></div>
+      <div class="stat-box"><div class="label">CHA</div><div class="value">10</div><div class="mod">+0</div></div>
+    </div>
+    <div class="note">Base: STR 8, DEX 15+2 (racial), CON 15+1 (racial), INT 10, WIS 13, CHA 10 · L4 ASI +1 DEX +1 CON → DEX 18, CON 17 · Mirror of Loss +2 DEX → final DEX 20</div>
+    <div class="meta-row">
+      <div class="meta-pill"><span class="key">Skills:</span><span class="val">Deception, Sleight of Hand (bg), Perception (racial, exp), Stealth (exp), Insight, Survival, Acrobatics</span></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>Level Progression</h3>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Lvl</th><th>Class</th><th>Key Gains</th></tr></thead>
+        <tbody>
+          <tr><td>1</td><td>Ranger 1</td><td>Fighting Style: Archery · Favoured Enemy: Bounty Hunter · Natural Explorer: Urban Tracker (Thieves' Tools) · Racial cantrip: Booming Blade</td></tr>
+          <tr><td>2</td><td>Ranger 2</td><td>Spells: Hunter's Mark, Longstrider</td></tr>
+          <tr class="feat-row"><td>3</td><td>Ranger 3 <span class="subclass-tag">Gloom Stalker</span></td><td>Features: Dread Ambusher (+3 init, extra attack turn 1), Umbral Shroud, Superior Darkvision · Spell: Enhance Leap</td></tr>
+          <tr class="feat-row"><td>4</td><td>Ranger 4</td><td><span class="feat-tag">Feat</span> ASI +1 DEX +1 CON (→DEX 18, CON 17)</td></tr>
+          <tr><td>5</td><td>Ranger 5</td><td>Extra Attack · Spell: Pass Without Trace</td></tr>
+          <tr><td>6</td><td>Rogue 1</td><td>Sneak Attack 1d6 · Expertise: Stealth + Perception · Skill: Acrobatics · Cunning Action</td></tr>
+          <tr><td>7</td><td>Rogue 2</td><td>Cunning Action: Dash / Disengage / Hide</td></tr>
+          <tr class="feat-row"><td>8</td><td>Rogue 3 <span class="subclass-tag">Thief</span></td><td>Features: Fast Hands, Second-Story Work</td></tr>
+          <tr class="feat-row"><td>9</td><td>Rogue 4</td><td><span class="feat-tag">Feat</span> Sharpshooter (−5 hit, +10 damage)</td></tr>
+          <tr><td>10</td><td>Fighter 1</td><td>Fighting Style: Two Weapon Fighting · Feature: Second Wind</td></tr>
+          <tr><td>11</td><td>Fighter 2</td><td>Feature: Action Surge</td></tr>
+          <tr class="feat-row"><td>12</td><td>Fighter 3 <span class="subclass-tag">Battle Master</span></td><td>Manoeuvres: Precision Attack, Trip Attack, Menacing Attack</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>Equipment by Act</h3>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr><th>Slot</th><th><span class="act-label a1">Act 1</span></th><th><span class="act-label a2">Act 2</span></th><th><span class="act-label a3">Act 3</span></th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Head</td><td class="act1-row">Shadow of Menzoberranzan</td><td class="act2-row">Shadow of Menzoberranzan</td><td class="act3-row">Helm of Balduran <span class="warn-badge">Ansur puzzle</span></td></tr>
+          <tr><td>Cloak</td><td class="act1-row">—</td><td class="act2-row">—</td><td class="act3-row">Shade-Slayer Cloak</td></tr>
+          <tr><td>Body</td><td class="act1-row">Adamantine Scale Mail</td><td class="act2-row">Yuan-Ti Scale Mail</td><td class="act3-row">Elegant Studded Leather</td></tr>
+          <tr><td>Gloves</td><td class="act1-row">Gloves of Archery</td><td class="act2-row">Gloves of Archery</td><td class="act3-row">Helldusk Gloves</td></tr>
+          <tr><td>Boots</td><td class="act1-row">Boots of Striding</td><td class="act2-row">Evasive Shoes <span class="warn-badge">⚠ verify vendor</span></td><td class="act3-row">Helldusk Boots</td></tr>
+          <tr><td>Amulet</td><td class="act1-row">Moondrop Pendant</td><td class="act2-row">Surgeon's Subjugation Amulet</td><td class="act3-row">Surgeon's Subjugation Amulet</td></tr>
+          <tr><td>Ring 1</td><td class="act1-row">Caustic Band</td><td class="act2-row">Risky Ring</td><td class="act3-row">Risky Ring</td></tr>
+          <tr><td>Ring 2</td><td class="act1-row">Shifting Corpus Ring</td><td class="act2-row">Killer's Sweetheart</td><td class="act3-row">Ring of Free Action (from Shadowheart)</td></tr>
+          <tr><td>Ranged Main</td><td class="act1-row">Hand Crossbow +1</td><td class="act2-row">Hellfire Hand Crossbow <span class="warn-badge">kill Yurgir</span></td><td class="act3-row">Hellfire Hand Crossbow</td></tr>
+          <tr><td>Ranged Off</td><td class="act1-row">Hand Crossbow +1</td><td class="act2-row">Ne'er Misser</td><td class="act3-row">Ne'er Misser</td></tr>
+          <tr><td>Melee Main</td><td class="act1-row">Shortsword +1</td><td class="act2-row">Sword of Life Stealing</td><td class="act3-row">Bloodthirst <span class="warn-badge">House of Hope</span></td></tr>
+          <tr><td>Melee Off</td><td class="act1-row">Dagger +1</td><td class="act2-row">Shortsword +1</td><td class="act3-row">Rhapsody <span class="warn-badge">Cazador quest</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="callout-warn">
+    <h3>Permanent Bonuses &amp; Missables</h3>
+    <ul>
+      <li><span class="item-name">Mirror of Loss</span> → +2 DEX → final DEX 20 <span class="item-detail">Act 3, Gauntlet under House of Grief. Use Guidance + save scum. Do this last in the Mirror order.</span></li>
+    </ul>
+  </div>
+
+  <div class="card">
+    <h3>Combat Tactics</h3>
+    <div class="tactics">
+      <ul>
+        <li><strong>First-turn nova (Act 3):</strong> Action (2 attacks + Dread Ambusher extra) + Action Surge (2 more) + BA1 (offhand) + BA2 (Fast Hands offhand) = 5–7 attacks, all with advantage from stealth/darkness</li>
+        <li><strong>Sharpshooter always active:</strong> −5 to hit, +10 damage — offset by Archery style (+2 hit) and Risky Ring (permanent advantage)</li>
+        <li><strong>Risky Ring:</strong> always attack with advantage, but enemies also have advantage on you — stay hidden behind Shadow of Menzoberranzan</li>
+        <li><strong>Killer's Sweetheart:</strong> guarantee one crit per long rest — save for boss fights or guaranteed alpha-strike</li>
+        <li><strong>Surgeon's Subjugation Amulet:</strong> crits paralyze humanoids — very frequent with this build's crit rate</li>
+        <li>Malevola's Greater Invisibility keeps Astarion invisible after each attack, preventing targeting and guaranteeing Sneak Attack every turn</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════ KARLACH ══════════════════════════════════════════ -->
+<section class="character-section" id="karlach">
+  <div class="section-header">
+    <h2>Karlach</h2>
+    <div class="subtitle">Origin companion · Zariel Tiefling (locked) · Outlander &nbsp;·&nbsp; Monk 9 (Open Hand) / Rogue 3 (Thief) &nbsp;·&nbsp; Frontline bruiser · crowd controller · sustained melee damage</div>
+  </div>
+
+  <div class="card">
+    <h3>Ability Scores</h3>
+    <div class="stat-grid">
+      <div class="stat-box"><div class="label">STR</div><div class="value">8</div><div class="mod">−1</div></div>
+      <div class="stat-box"><div class="label">DEX</div><div class="value">16</div><div class="mod">+3</div></div>
+      <div class="stat-box"><div class="label">CON</div><div class="value">16</div><div class="mod">+3</div></div>
+      <div class="stat-box"><div class="label">INT</div><div class="value">8</div><div class="mod">−1</div></div>
+      <div class="stat-box"><div class="label">WIS</div><div class="value">17</div><div class="mod">+3</div></div>
+      <div class="stat-box"><div class="label">CHA</div><div class="value">8</div><div class="mod">−1</div></div>
+    </div>
+    <div class="note">Base: STR 8, DEX 15+1, CON 15+1 (racial), INT 8, WIS 15+2 (racial), CHA 8 · L4 Tavern Brawler +1 CON · L8 ASI +2 WIS (→19) · Mirror of Loss +2 WIS → WIS 21 · Unarmored AC = 10 + DEX mod + WIS mod</div>
+    <div class="meta-row">
+      <div class="meta-pill"><span class="key">Skills:</span><span class="val">Athletics (exp), Survival (bg), Acrobatics (exp), Stealth, Perception</span></div>
+      <div class="meta-pill"><span class="key">Elixir:</span><span class="val">Hill Giant Strength (STR 21) every long rest → Cloud Giant (STR 27) when available Act 2+</span></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>Level Progression</h3>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Lvl</th><th>Class</th><th>Key Gains</th></tr></thead>
+        <tbody>
+          <tr><td>1</td><td>Monk 1</td><td>Unarmored Defense (AC = 10+DEX+WIS) · Martial Arts 1d4 · Bonus Unarmed Strike · Flurry of Blows · Ki Points 2</td></tr>
+          <tr><td>2</td><td>Monk 2</td><td>Unarmored Movement · Patient Defense · Step of the Wind</td></tr>
+          <tr class="feat-row"><td>3</td><td>Monk 3 <span class="subclass-tag">Open Hand</span></td><td>Flurry of Blows: Topple / Stagger / Push · Deflect Missiles</td></tr>
+          <tr class="feat-row"><td>4</td><td>Monk 4</td><td><span class="feat-tag">Feat</span> Tavern Brawler (+1 CON; doubles STR modifier on unarmed attacks)</td></tr>
+          <tr><td>5</td><td>Monk 5</td><td>Extra Attack · Stunning Strike · Unarmed → 1d6</td></tr>
+          <tr><td>6</td><td>Monk 6</td><td>Manifestations: pick <strong>Mind</strong> (Psychic — rarely resisted) · Wholeness of Body · Ki-Empowered Strikes</td></tr>
+          <tr><td>7</td><td>Monk 7</td><td>Evasion · Stillness of Mind · Purity of Body</td></tr>
+          <tr class="feat-row"><td>8</td><td>Monk 8</td><td><span class="feat-tag">Feat</span> ASI +2 WIS (17→19) · Unarmed → 1d8</td></tr>
+          <tr><td>9</td><td>Monk 9</td><td>Ki Resonation: Punch + Blast (AoE detonation on clustered enemies)</td></tr>
+          <tr><td>10</td><td>Rogue 1</td><td>Sneak Attack 1d6 · Perception skill · Expertise: Athletics + Acrobatics</td></tr>
+          <tr><td>11</td><td>Rogue 2</td><td>Cunning Action</td></tr>
+          <tr class="feat-row"><td>12</td><td>Rogue 3 <span class="subclass-tag">Thief</span></td><td><strong>Second Bonus Action (Fast Hands)</strong> — the entire reason for this dip</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>Equipment by Act</h3>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr><th>Slot</th><th><span class="act-label a1">Act 1</span></th><th><span class="act-label a2">Act 2</span></th><th><span class="act-label a3">Act 3</span></th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Head</td><td class="act1-row">Haste Helm (from Shadowheart post-Rosymorn)</td><td class="act2-row">Circlet of Hunting <span class="warn-badge">Araj Oblodra</span></td><td class="act3-row">Horns of the Berserker <span class="warn-badge">⚠ verify location</span></td></tr>
+          <tr><td>Cloak</td><td class="act1-row">—</td><td class="act2-row">Fleshmelter Cloak → Cloak of Protection (late, from Shadowheart)</td><td class="act3-row">Cloak of Protection</td></tr>
+          <tr><td>Body</td><td class="act1-row">Armour of Uninhibited Kushigo</td><td class="act2-row">The Graceful Cloth</td><td class="act3-row">Vest of Soul Rejuvenation</td></tr>
+          <tr><td>Gloves</td><td class="act1-row">Bracers of Defence</td><td class="act2-row">Bracers of Defence</td><td class="act3-row">Gloves of Soul Catching <span class="warn-badge">House of Hope</span></td></tr>
+          <tr><td>Boots</td><td class="act1-row">Boots of Genial Striding</td><td class="act2-row">Boots of Genial Striding</td><td class="act3-row">Boots of Uninhibited Kushigo <span class="warn-badge">Astral Prism event</span></td></tr>
+          <tr><td>Amulet</td><td class="act1-row">Sentient Amulet (Rare) <span class="warn-badge">Grymforge</span></td><td class="act2-row">Sentient Amulet (Rare)</td><td class="act3-row">Sentient Amulet (Very Rare) <span class="warn-badge">⚠ questline</span></td></tr>
+          <tr><td>Ring 1</td><td class="act1-row">Crusher's Ring</td><td class="act2-row">Crusher's Ring</td><td class="act3-row">Crusher's Ring</td></tr>
+          <tr><td>Ring 2</td><td class="act1-row">Ring of Protection</td><td class="act2-row">Ring of Protection</td><td class="act3-row">Ring of Free Action (from Shadowheart)</td></tr>
+          <tr><td>Elixir</td><td class="act1-row">Hill Giant Strength (STR 21)</td><td class="act2-row">Hill Giant → Cloud Giant (STR 27) when found</td><td class="act3-row">Cloud Giant Strength (STR 27)</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="note">With Cloud Giant Strength (STR 27, mod +8), Tavern Brawler doubles it to +16 on every punch. Farm Hill Giant elixirs from vendors Act 1+; upgrade to Cloud Giant as soon as available Act 2+.</div>
+  </div>
+
+  <div class="callout-warn">
+    <h3>Permanent Bonuses &amp; Missables</h3>
+    <ul>
+      <li><span class="item-name">Elixir of Hill Giant Strength</span> (STR 21) every long rest <span class="item-detail">Farm from vendors starting Act 1. STR doubled by Tavern Brawler = +10 per punch.</span></li>
+      <li><span class="item-name">Upgrade to Cloud Giant Strength</span> (STR 27) when available in Act 2+ <span class="item-detail">Available from vendors Act 2+. Doubled modifier = +16 per punch. Always use this when you can get it.</span></li>
+      <li><span class="item-name">Mirror of Loss</span> → +2 WIS → WIS 21 <span class="item-detail">Act 3, Gauntlet under House of Grief. Use Guidance + save scum. Do this third in the Mirror order.</span></li>
+    </ul>
+  </div>
+
+  <div class="callout-yellow">
+    <h3>Per-Turn Damage Breakdown — Act 3 Full Build</h3>
+    <div class="tactics">
+      <ul>
+        <li>Action: 2 attacks (Extra Attack)</li>
+        <li>Bonus Action 1: Flurry of Blows: Topple (2 punches, CON save or prone)</li>
+        <li>Bonus Action 2: Ki Resonation Punch OR second Flurry (Fast Hands)</li>
+        <li>Each punch: 1d8 (Martial Arts) + 16 (Tavern Brawler × Cloud Giant mod) + WIS mod (Boots of Uninhibited Kushigo) + 1d6 Sneak Attack + 1d4+WIS (Manifestation of Mind) + 1d10 Force + 10 HP heal (Gloves of Soul Catching)</li>
+        <li><strong>Total: 4–6 hits per turn · ~25–35 damage each · 100–200 damage per turn consistently</strong></li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>Combat Tactics</h3>
+    <div class="tactics">
+      <ul>
+        <li><strong>Open with Stunning Strike</strong> on the most dangerous enemy (boss/caster) — stunned = auto-crit, all attacks have advantage. Spend Ki freely; Sentient Amulet restores Ki mid-combat.</li>
+        <li><strong>Flurry of Blows: Topple</strong> on clusters — prone enemies give Astarion advantage on all ranged attacks, enabling Sneak Attack and Sharpshooter reliably</li>
+        <li><strong>Ki Resonation: Blast</strong> for AoE detonation on clustered enemies</li>
+        <li><strong>Patient Defense</strong> when low on Ki or taking heavy fire</li>
+        <li><strong>Sentient Amulet:</strong> Ki Restoration mid-combat — more Stunning Strikes, more prone, more advantage for the party</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════ PARTY ══════════════════════════════════════════ -->
+<section class="character-section" id="party">
+  <div class="section-header">
+    <h2>Party</h2>
+    <div class="subtitle">Equipment conflict resolutions · Master missables checklist · Party synergies</div>
+  </div>
+
+  <div class="callout-yellow">
+    <h3>Equipment Conflict Resolutions</h3>
+    <p style="font-size:12px;color:var(--text-dim);margin-bottom:14px;">All conflicts resolved — no item appears on two characters simultaneously.</p>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Item</th><th>Resolution</th></tr></thead>
+        <tbody>
+          <tr><td>Disintegrating Night Walkers</td><td>→ Malevola. She needs Misty Step; Astarion has it built-in at Ranger 5</td></tr>
+          <tr><td>Caustic Band</td><td>→ Astarion (higher attack volume). Karlach gets Ring of Protection instead</td></tr>
+          <tr><td>Surgeon's Subjugation Amulet</td><td>→ Astarion Act 2+. Malevola uses Spellcrux Amulet in Act 2</td></tr>
+          <tr><td>Amulet of Greater Health</td><td>→ Malevola Act 3. CON 23 protects concentration. Astarion gets Ring of Free Action</td></tr>
+          <tr><td>Ring of Free Action</td><td>Shadowheart Act 2 (mid) → Karlach Act 3. Karlach gets it (frontline paralysis immunity more critical). Astarion has Helldusk Boots for mobility.</td></tr>
+          <tr><td>Haste Helm</td><td>Shadowheart early Act 1 → Karlach after Rosymorn (Shadowheart gets Holy Lance Helm)</td></tr>
+          <tr><td>Cloak of Protection</td><td>Shadowheart early Act 2 → Karlach late Act 2 (Shadowheart upgrades to Vivacious Cloak)</td></tr>
+          <tr><td>Warped Headband of Intellect</td><td>Malevola Acts 1–2 → Shadowheart Act 3 (Malevola gets Birthright)</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>Master Missables Checklist</h3>
+    <button class="reset-btn" onclick="resetChecklist()">Reset All Checkboxes</button>
+
+    <div class="missables-act">
+      <h4>Act 1</h4>
+
+      <div class="missable-item" id="mi-ethel">
+        <input type="checkbox" onchange="toggleMissable(this)">
+        <div class="missable-content">
+          <span class="item-title">Auntie Ethel's Hair</span><span class="item-char char-mal">Malevola</span><span class="warn-badge">Missable</span>
+          <div class="item-desc">+1 CHA permanent. Let her take one eye, then REFUSE — she gives the hair. Do not kill her first.</div>
+        </div>
+      </div>
+
+      <div class="missable-item" id="mi-thay">
+        <input type="checkbox" onchange="toggleMissable(this)">
+        <div class="missable-content">
+          <span class="item-title">Necromancy of Thay</span><span class="item-char char-mal">Malevola</span>
+          <div class="item-desc">Blighted Village basement bookshelf. Requires Tome of Thay key from phase spider area.</div>
+        </div>
+      </div>
+
+      <div class="missable-item" id="mi-loviatar">
+        <input type="checkbox" onchange="toggleMissable(this)">
+        <div class="missable-content">
+          <span class="item-title">Loviatar's Love</span><span class="item-char char-mal">Malevola</span>
+          <div class="item-desc">+2 attacks/saves below 30% HP. Goblin camp dungeon — let Abdirak beat you until you get the buff.</div>
+        </div>
+      </div>
+
+      <div class="missable-item" id="mi-scratch">
+        <input type="checkbox" onchange="toggleMissable(this)">
+        <div class="missable-content">
+          <span class="item-title">Find Familiar: Scratch</span><span class="item-char char-mal">Malevola</span>
+          <div class="item-desc">Pet the dog near Blighted Village, find his owner's body, keep him.</div>
+        </div>
+      </div>
+
+      <div class="missable-item" id="mi-bracers">
+        <input type="checkbox" onchange="toggleMissable(this)">
+        <div class="missable-content">
+          <span class="item-title">Bracers of Defence</span><span class="item-char char-kar">Karlach</span>
+          <div class="item-desc">Apothecary's Cellar, Blighted Village. Hidden hatch in the house with the apothecary sign.</div>
+        </div>
+      </div>
+
+      <div class="missable-item" id="mi-shadow-menz">
+        <input type="checkbox" onchange="toggleMissable(this)">
+        <div class="missable-content">
+          <span class="item-title">Shadow of Menzoberranzan</span><span class="item-char char-ast">Astarion</span>
+          <div class="item-desc">Myconid Colony, loot the Duergar Drow.</div>
+        </div>
+      </div>
+
+      <div class="missable-item" id="mi-sentient-amulet">
+        <input type="checkbox" onchange="toggleMissable(this)">
+        <div class="missable-content">
+          <span class="item-title">Sentient Amulet (Rare)</span><span class="item-char char-kar">Karlach</span>
+          <div class="item-desc">Grymforge, lava area near the suffering NPC monk. Talk to him, take the amulet.</div>
+        </div>
+      </div>
+
+      <div class="missable-item" id="mi-boots-genial">
+        <input type="checkbox" onchange="toggleMissable(this)">
+        <div class="missable-content">
+          <span class="item-title">Boots of Genial Striding</span><span class="item-char char-kar">Karlach</span>
+          <div class="item-desc">Buy from Blurg at Myconid Colony.</div>
+        </div>
+      </div>
+
+      <div class="missable-item" id="mi-crushers-ring">
+        <input type="checkbox" onchange="toggleMissable(this)">
+        <div class="missable-content">
+          <span class="item-title">Crusher's Ring</span><span class="item-char char-kar">Karlach</span>
+          <div class="item-desc">Loot or win from Crusher at the Goblin Camp entrance.</div>
+        </div>
+      </div>
+
+      <div class="missable-item" id="mi-adamantine">
+        <input type="checkbox" onchange="toggleMissable(this)">
+        <div class="missable-content">
+          <span class="item-title">Adamantine Forge Items (×2)</span><span class="item-char char-ast">Astarion</span><span class="item-char char-sh">Shadowheart</span><span class="warn-badge">Exactly 2 Mithral Ore</span>
+          <div class="item-desc">Grymforge. Craft Adamantine Scale Mail (Astarion) AND Adamantine Shield (Shadowheart). There are exactly 2 Mithral Ore in Act 1 — don't waste them.</div>
+        </div>
+      </div>
+
+      <h4>Rosymorn / Creche — Before End of Act 1 or Early Act 2</h4>
+
+      <div class="missable-item" id="mi-blood-lathander">
+        <input type="checkbox" onchange="toggleMissable(this)">
+        <div class="missable-content">
+          <span class="item-title">Blood of Lathander</span><span class="item-char char-sh">Shadowheart</span><span class="warn-badge">Missable</span>
+          <div class="item-desc">Complete the Rosymorn puzzle before certain story triggers or it becomes inaccessible.</div>
+        </div>
+      </div>
+
+      <div class="missable-item" id="mi-holy-lance-helm">
+        <input type="checkbox" onchange="toggleMissable(this)">
+        <div class="missable-content">
+          <span class="item-title">Holy Lance Helm</span><span class="item-char char-sh">Shadowheart</span>
+          <div class="item-desc">Rosymorn Monastery rooftop, locked room.</div>
+        </div>
+      </div>
+
+      <div class="missable-item" id="mi-vital-conduit">
+        <input type="checkbox" onchange="toggleMissable(this)">
+        <div class="missable-content">
+          <span class="item-title">Vital Conduit Boots</span><span class="item-char char-sh">Shadowheart</span>
+          <div class="item-desc">Buy from A'jak'nir Jeera in the Creche.</div>
+        </div>
+      </div>
+
+      <div class="missable-item" id="mi-gloves-belligerent">
+        <input type="checkbox" onchange="toggleMissable(this)">
+        <div class="missable-content">
+          <span class="item-title">Gloves of Belligerent Skies</span><span class="item-char char-sh">Shadowheart</span>
+          <div class="item-desc">Inquisitor's Chamber, Creche.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="missables-act">
+      <h4>Act 2</h4>
+
+      <div class="missable-item" id="mi-killers-sweetheart">
+        <input type="checkbox" onchange="toggleMissable(this)">
+        <div class="missable-content">
+          <span class="item-title">Killer's Sweetheart</span><span class="item-char char-ast">Astarion</span>
+          <div class="item-desc">Gauntlet of Shar, Self-Same Trial — defeat your own reflection.</div>
+        </div>
+      </div>
+
+      <div class="missable-item" id="mi-hellfire-xbow">
+        <input type="checkbox" onchange="toggleMissable(this)">
+        <div class="missable-content">
+          <span class="item-title">Hellfire Hand Crossbow</span><span class="item-char char-ast">Astarion</span>
+          <div class="item-desc">Kill Yurgir in the Gauntlet of Shar. Convince him to kill his followers first for XP, then kill him.</div>
+        </div>
+      </div>
+
+      <div class="missable-item" id="mi-ring-free-action">
+        <input type="checkbox" onchange="toggleMissable(this)">
+        <div class="missable-content">
+          <span class="item-title">Ring of Free Action</span><span class="item-char char-sh">Shadowheart</span><span class="item-char char-kar">Karlach</span><span class="warn-badge">Buy before Act 2 ends</span>
+          <div class="item-desc">Buy from Araj Oblodra at Moonrise Towers. One ring — Shadowheart wears Act 2, passes to Karlach Act 3.</div>
+        </div>
+      </div>
+
+      <div class="missable-item" id="mi-circlet-hunting">
+        <input type="checkbox" onchange="toggleMissable(this)">
+        <div class="missable-content">
+          <span class="item-title">Circlet of Hunting</span><span class="item-char char-kar">Karlach</span>
+          <div class="item-desc">Buy from Araj Oblodra at Moonrise Towers. Buy before finishing Act 2.</div>
+        </div>
+      </div>
+
+      <div class="missable-item" id="mi-evasive-shoes">
+        <input type="checkbox" onchange="toggleMissable(this)">
+        <div class="missable-content">
+          <span class="item-title">Evasive Shoes</span><span class="item-char char-ast">Astarion</span><span class="warn-badge">⚠ verify vendor</span>
+          <div class="item-desc">Available from Act 2 vendors — confirm exact location before purchasing.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="missables-act">
+      <h4>Act 3</h4>
+
+      <div class="missable-item" id="mi-birthright">
+        <input type="checkbox" onchange="toggleMissable(this)">
+        <div class="missable-content">
+          <span class="item-title">Birthright</span><span class="item-char char-mal">Malevola</span><span class="warn-badge">Buy BEFORE Nightsong POI</span>
+          <div class="item-desc">Sorcerous Sundries. Buy before Find the Nightsong triggers the Act 3 point of no return.</div>
+        </div>
+      </div>
+
+      <div class="missable-item" id="mi-ring-regen">
+        <input type="checkbox" onchange="toggleMissable(this)">
+        <div class="missable-content">
+          <span class="item-title">Ring of Regeneration</span><span class="item-char char-sh">Shadowheart</span><span class="warn-badge">Buy BEFORE Nightsong POI</span>
+          <div class="item-desc">Sorcerous Sundries. Buy before Find the Nightsong point of no return.</div>
+        </div>
+      </div>
+
+      <div class="missable-item" id="mi-boots-kushigo">
+        <input type="checkbox" onchange="toggleMissable(this)">
+        <div class="missable-content">
+          <span class="item-title">Boots of Uninhibited Kushigo</span><span class="item-char char-kar">Karlach</span>
+          <div class="item-desc">Beginning of Act 3, Astral Prism story event. Cannot miss if you play through normally.</div>
+        </div>
+      </div>
+
+      <div class="missable-item" id="mi-gloves-soul-catching">
+        <input type="checkbox" onchange="toggleMissable(this)">
+        <div class="missable-content">
+          <span class="item-title">Gloves of Soul Catching</span><span class="item-char char-kar">Karlach</span>
+          <div class="item-desc">House of Hope — save Hope, defeat Raphael. Full questline required.</div>
+        </div>
+      </div>
+
+      <div class="missable-item" id="mi-amulet-greater-health">
+        <input type="checkbox" onchange="toggleMissable(this)">
+        <div class="missable-content">
+          <span class="item-title">Amulet of Greater Health</span><span class="item-char char-mal">Malevola</span>
+          <div class="item-desc">House of Hope, chest near Raphael's records.</div>
+        </div>
+      </div>
+
+      <div class="missable-item" id="mi-bloodthirst">
+        <input type="checkbox" onchange="toggleMissable(this)">
+        <div class="missable-content">
+          <span class="item-title">Bloodthirst</span><span class="item-char char-ast">Astarion</span>
+          <div class="item-desc">House of Hope.</div>
+        </div>
+      </div>
+
+      <div class="missable-item" id="mi-mirror-of-loss">
+        <input type="checkbox" onchange="toggleMissable(this)">
+        <div class="missable-content">
+          <span class="item-title">Mirror of Loss — All Four Characters</span><span class="item-char char-all">All</span>
+          <div class="item-desc">Gauntlet under House of Grief. Guidance + save scum for +2 to desired stat. Order: Malevola (CHA) → Shadowheart (WIS) → Karlach (WIS) → Astarion (DEX).</div>
+        </div>
+      </div>
+
+      <div class="missable-item" id="mi-viconias-fortress">
+        <input type="checkbox" onchange="toggleMissable(this)">
+        <div class="missable-content">
+          <span class="item-title">Viconia's Walking Fortress</span><span class="item-char char-sh">Shadowheart</span>
+          <div class="item-desc">Defeat Viconia at the House of Grief.</div>
+        </div>
+      </div>
+
+      <div class="missable-item" id="mi-helm-balduran">
+        <input type="checkbox" onchange="toggleMissable(this)">
+        <div class="missable-content">
+          <span class="item-title">Helm of Balduran</span><span class="item-char char-ast">Astarion</span>
+          <div class="item-desc">Solve the Ansur dragon puzzle in the sewers.</div>
+        </div>
+      </div>
+
+      <div class="missable-item" id="mi-horns-berserker">
+        <input type="checkbox" onchange="toggleMissable(this)">
+        <div class="missable-content">
+          <span class="item-title">Horns of the Berserker</span><span class="item-char char-kar">Karlach</span><span class="warn-badge">⚠ verify location</span>
+          <div class="item-desc">Act 3 merchant or chest — confirm exact location on bg3.wiki before purchasing.</div>
+        </div>
+      </div>
+
+      <div class="missable-item" id="mi-gontr-mael">
+        <input type="checkbox" onchange="toggleMissable(this)">
+        <div class="missable-content">
+          <span class="item-title">Gontr Mael</span><span class="item-char char-mal">Malevola</span>
+          <div class="item-desc">Defeat the Steel Watcher Titan at the Steel Watch Foundry.</div>
+        </div>
+      </div>
+
+      <div class="missable-item" id="mi-markoheshkir">
+        <input type="checkbox" onchange="toggleMissable(this)">
+        <div class="missable-content">
+          <span class="item-title">Markoheshkir</span><span class="item-char char-mal">Malevola</span>
+          <div class="item-desc">Sorcerous Sundries vault.</div>
+        </div>
+      </div>
+
+      <div class="missable-item" id="mi-sentient-upgrade">
+        <input type="checkbox" onchange="toggleMissable(this)">
+        <div class="missable-content">
+          <span class="item-title">Sentient Amulet Upgrade (Very Rare)</span><span class="item-char char-kar">Karlach</span><span class="warn-badge">⚠ questline</span>
+          <div class="item-desc">Complete the Sentient Amulet questline (return amulet to the monk's spirit) in Act 3. Confirm exact trigger and location before starting.</div>
+        </div>
+      </div>
+
+      <div class="missable-item" id="mi-rhapsody">
+        <input type="checkbox" onchange="toggleMissable(this)">
+        <div class="missable-content">
+          <span class="item-title">Rhapsody</span><span class="item-char char-ast">Astarion</span>
+          <div class="item-desc">Investigate Cazador quest reward.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>Party Synergies</h3>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Synergy</th><th>Characters</th><th>How It Works</th></tr></thead>
+        <tbody>
+          <tr>
+            <td>Prone → Advantage</td>
+            <td class="synergy-who">Karlach + Astarion</td>
+            <td>Karlach Flurry: Topple knocks prone; Astarion gets advantage on all ranged attacks vs prone targets, enabling Sneak Attack and Sharpshooter reliably every turn</td>
+          </tr>
+          <tr>
+            <td>Stun → Auto-crit</td>
+            <td class="synergy-who">Karlach + Everyone</td>
+            <td>Karlach Stunning Strike stuns the target; all melee attacks auto-crit. Astarion's Action Surge turn against a stunned boss is catastrophic.</td>
+          </tr>
+          <tr>
+            <td>Radiant Synergy</td>
+            <td class="synergy-who">Shadowheart</td>
+            <td>Luminous Armour marks enemies that hit her as Luminous; Callous Glow Ring adds 2 radiant damage to all attacks vs Luminous; Coruscation Ring makes hit enemies glow too — creates a chain</td>
+          </tr>
+          <tr>
+            <td>Greater Invisibility</td>
+            <td class="synergy-who">Malevola + Astarion</td>
+            <td>Malevola casts Greater Invisibility on Astarion; he attacks from invisibility every turn (advantage on all attacks), can't be targeted, Sneak Attack always triggers</td>
+          </tr>
+          <tr>
+            <td>Warding Flare</td>
+            <td class="synergy-who">Shadowheart + All</td>
+            <td>Improved Warding Flare: reaction to impose disadvantage on attacks against ANY party member — effectively halves enemy hit rate across the whole party</td>
+          </tr>
+          <tr>
+            <td>Slow</td>
+            <td class="synergy-who">Malevola + All</td>
+            <td>Slow halves enemy action economy; stacks with Stunning Strike for fully action-locked bosses</td>
+          </tr>
+          <tr>
+            <td>Heroes' Feast</td>
+            <td class="synergy-who">Shadowheart + All</td>
+            <td>Cast before every major fight — immunity to fear/poison, +15 max HP, advantage on WIS saves for entire party</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+</section>
+</main>
+
+<script>
+  const KEY = 'bg3-maleviolas-';
+
+  document.addEventListener('DOMContentLoaded', () => {
+    document.querySelectorAll('.missable-item[id]').forEach(item => {
+      const saved = localStorage.getItem(KEY + item.id);
+      if (saved === '1') {
+        item.querySelector('input[type="checkbox"]').checked = true;
+        item.classList.add('checked');
+      }
+    });
+  });
+
+  function toggleMissable(cb) {
+    const item = cb.closest('.missable-item');
+    if (cb.checked) {
+      item.classList.add('checked');
+      localStorage.setItem(KEY + item.id, '1');
+    } else {
+      item.classList.remove('checked');
+      localStorage.removeItem(KEY + item.id);
+    }
+  }
+
+  function resetChecklist() {
+    document.querySelectorAll('.missable-item[id]').forEach(item => {
+      item.querySelector('input[type="checkbox"]').checked = false;
+      item.classList.remove('checked');
+      localStorage.removeItem(KEY + item.id);
+    });
+  }
+</script>
+
+</body>
+</html>
