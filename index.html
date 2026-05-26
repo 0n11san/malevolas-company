@@ -28,8 +28,69 @@
     --missable-bg: rgba(184, 48, 32, 0.1);
     --callout-yellow-bg: rgba(201, 168, 76, 0.07);
     --callout-yellow-border: rgba(201, 168, 76, 0.35);
-    --nav-height: 52px;
   }
+
+  /* ── Page header ── */
+  .page-header {
+    text-align: center;
+    padding: 40px 24px 24px;
+    position: relative;
+  }
+  .page-header::after {
+    content: '';
+    display: block;
+    width: 50%;
+    height: 1px;
+    background: linear-gradient(to right, transparent, var(--gold), transparent);
+    margin: 20px auto 0;
+  }
+  .page-title {
+    font-family: 'Cinzel Decorative', serif;
+    font-size: clamp(20px, 4vw, 34px);
+    color: var(--gold-light);
+    letter-spacing: 0.04em;
+    text-shadow: 0 0 40px rgba(201,168,76,0.25);
+  }
+  .page-subtitle {
+    font-family: 'Cinzel', serif;
+    font-size: 11px;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--text-dim);
+    margin-top: 8px;
+  }
+
+  /* ── Tabs ── */
+  .tabs {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 4px;
+    padding: 0 24px 32px;
+  }
+  .tab-btn {
+    font-family: 'Cinzel', serif;
+    font-size: 11px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    padding: 9px 22px;
+    background: rgba(201,168,76,0.04);
+    border: 1px solid rgba(201,168,76,0.15);
+    color: var(--text-dim);
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .tab-btn:hover { color: var(--gold-light); border-color: rgba(201,168,76,0.35); }
+  .tab-btn[data-char="malevola"].active   { border-color: #c9a84c; color: #e8c96a; background: rgba(201,168,76,0.1); }
+  .tab-btn[data-char="shadowheart"].active { border-color: #4a90d9; color: #7ab0e8; background: rgba(74,144,217,0.1); }
+  .tab-btn[data-char="astarion"].active   { border-color: #9b59b6; color: #c090d8; background: rgba(155,89,182,0.1); }
+  .tab-btn[data-char="karlach"].active    { border-color: #c0392b; color: #e06050; background: rgba(192,57,43,0.1); }
+  .tab-btn[data-char="party"].active      { border-color: var(--gold); color: var(--gold-light); background: rgba(201,168,76,0.1); }
+
+  /* ── Panels ── */
+  .panel { display: none; }
+  .panel.active { display: block; animation: fadeIn 0.25s ease; }
+  @keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
 
   html { scroll-behavior: smooth; }
 
@@ -45,65 +106,14 @@
       url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23c9a84c' fill-opacity='0.015'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
   }
 
-  /* ── Nav ── */
-  nav {
-    position: sticky;
-    top: 0;
-    z-index: 100;
-    background: rgba(8,7,5,0.97);
-    border-bottom: 1px solid rgba(201,168,76,0.2);
-    display: flex;
-    align-items: center;
-    height: var(--nav-height);
-    padding: 0 24px;
-    gap: 6px;
-    overflow-x: auto;
-  }
-
-  nav .title {
-    font-family: 'Cinzel Decorative', serif;
-    color: var(--gold-light);
-    font-size: 14px;
-    letter-spacing: 0.04em;
-    margin-right: 12px;
-    white-space: nowrap;
-    flex-shrink: 0;
-    text-shadow: 0 0 20px rgba(201,168,76,0.3);
-  }
-
-  nav .sep {
-    color: var(--gold-dim);
-    font-size: 16px;
-    flex-shrink: 0;
-    margin: 0 4px;
-  }
-
-  nav a {
-    font-family: 'Cinzel', serif;
-    color: var(--text-dim);
-    text-decoration: none;
-    padding: 6px 13px;
-    font-size: 11px;
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 0.12em;
-    white-space: nowrap;
-    transition: color 0.15s, background 0.15s;
-    border: 1px solid transparent;
-  }
-
-  nav a:hover { color: var(--gold-light); border-color: rgba(201,168,76,0.25); }
-
   /* ── Layout ── */
   main {
-    max-width: 1200px;
+    max-width: 1100px;
     margin: 0 auto;
-    padding: 32px 24px;
+    padding: 0 24px 64px;
   }
 
-  [id] { scroll-margin-top: calc(var(--nav-height) + 16px); }
-
-  .character-section { margin-bottom: 80px; }
+  .character-section { margin-bottom: 0; }
 
   .section-header {
     border-bottom: 1px solid rgba(201,168,76,0.2);
@@ -512,21 +522,22 @@
 </head>
 <body>
 
-<nav>
-  <span class="title">Malevola's Company</span>
-  <span class="sep">|</span>
-  <a href="#malevola">Malevola</a>
-  <a href="#shadowheart">Shadowheart</a>
-  <a href="#astarion">Astarion</a>
-  <a href="#karlach">Karlach</a>
-  <span class="sep">|</span>
-  <a href="#party">Party</a>
-</nav>
+<header class="page-header">
+  <div class="page-title">Malevola's Company</div>
+  <div class="page-subtitle">Baldur's Gate III — Tactician · Honour Mode</div>
+</header>
+<div class="tabs">
+  <button class="tab-btn" data-char="malevola" onclick="switchTab('malevola')">Malevola</button>
+  <button class="tab-btn" data-char="shadowheart" onclick="switchTab('shadowheart')">Shadowheart</button>
+  <button class="tab-btn" data-char="astarion" onclick="switchTab('astarion')">Astarion</button>
+  <button class="tab-btn" data-char="karlach" onclick="switchTab('karlach')">Karlach</button>
+  <button class="tab-btn" data-char="party" onclick="switchTab('party')">Party</button>
+</div>
 
 <main>
 
 <!-- ══════════════════════════════════════════ MALEVOLA ══════════════════════════════════════════ -->
-<section class="character-section" id="malevola">
+<section class="character-section panel active" id="malevola">
   <div class="section-header">
     <h2>Malevola</h2>
     <div class="subtitle">Custom · Asmodeus Tiefling · Charlatan &nbsp;·&nbsp; Bard 10 / Warlock 2 (The Fiend) &nbsp;·&nbsp; Crowd control · debuffer · off-healer · face</div>
@@ -626,7 +637,7 @@
 </section>
 
 <!-- ══════════════════════════════════════════ SHADOWHEART ══════════════════════════════════════════ -->
-<section class="character-section" id="shadowheart">
+<section class="character-section panel" id="shadowheart">
   <div class="section-header">
     <h2>Shadowheart</h2>
     <div class="subtitle">Origin companion · High Half-Elf · Acolyte &nbsp;·&nbsp; Cleric 12 (Light Domain) · Deity: Selûne (respec at Withers) &nbsp;·&nbsp; Healer · support caster · radiant damage · party buffer</div>
@@ -720,7 +731,7 @@
 </section>
 
 <!-- ══════════════════════════════════════════ ASTARION ══════════════════════════════════════════ -->
-<section class="character-section" id="astarion">
+<section class="character-section panel" id="astarion">
   <div class="section-header">
     <h2>Astarion</h2>
     <div class="subtitle">Origin companion · High Elf · Charlatan &nbsp;·&nbsp; Ranger 5 / Rogue 4 / Fighter 3 &nbsp;·&nbsp; Gloom Stalker / Thief / Battle Master &nbsp;·&nbsp; Single-target burst · initiative · debuffer</div>
@@ -813,7 +824,7 @@
 </section>
 
 <!-- ══════════════════════════════════════════ KARLACH ══════════════════════════════════════════ -->
-<section class="character-section" id="karlach">
+<section class="character-section panel" id="karlach">
   <div class="section-header">
     <h2>Karlach</h2>
     <div class="subtitle">Origin companion · Zariel Tiefling (locked) · Outlander &nbsp;·&nbsp; Monk 9 (Open Hand) / Rogue 3 (Thief) &nbsp;·&nbsp; Frontline bruiser · crowd controller · sustained melee damage</div>
@@ -824,12 +835,12 @@
     <div class="stat-grid">
       <div class="stat-box"><div class="label">STR</div><div class="value">8</div><div class="mod">−1</div></div>
       <div class="stat-box"><div class="label">DEX</div><div class="value">16</div><div class="mod">+3</div></div>
-      <div class="stat-box"><div class="label">CON</div><div class="value">16</div><div class="mod">+3</div></div>
+      <div class="stat-box"><div class="label">CON</div><div class="value">15</div><div class="mod">+2</div></div>
       <div class="stat-box"><div class="label">INT</div><div class="value">8</div><div class="mod">−1</div></div>
       <div class="stat-box"><div class="label">WIS</div><div class="value">17</div><div class="mod">+3</div></div>
       <div class="stat-box"><div class="label">CHA</div><div class="value">8</div><div class="mod">−1</div></div>
     </div>
-    <div class="note">Base: STR 8, DEX 15+1, CON 15+1 (racial), INT 8, WIS 15+2 (racial), CHA 8 · L4 Tavern Brawler +1 CON · L8 ASI +2 WIS (→19) · Mirror of Loss +2 WIS → WIS 21 · Unarmored AC = 10 + DEX mod + WIS mod</div>
+    <div class="note">Base: STR 8, DEX 15+1, CON 15 (no racial bonus), INT 8, WIS 15+2 (racial), CHA 8 · L4 Tavern Brawler +1 CON · L8 ASI +2 WIS (→19) · Mirror of Loss +2 WIS → WIS 21 · Unarmored AC = 10 + DEX mod + WIS mod</div>
     <div class="meta-row">
       <div class="meta-pill"><span class="key">Skills:</span><span class="val">Athletics (exp), Survival (bg), Acrobatics (exp), Stealth, Perception</span></div>
       <div class="meta-pill"><span class="key">Elixir:</span><span class="val">Hill Giant Strength (STR 21) every long rest → Cloud Giant (STR 27) when available Act 2+</span></div>
@@ -919,7 +930,7 @@
 </section>
 
 <!-- ══════════════════════════════════════════ PARTY ══════════════════════════════════════════ -->
-<section class="character-section" id="party">
+<section class="character-section panel" id="party">
   <div class="section-header">
     <h2>Party</h2>
     <div class="subtitle">Equipment conflict resolutions · Master missables checklist · Party synergies</div>
@@ -1278,6 +1289,16 @@
 </main>
 
 <script>
+  function switchTab(name) {
+    document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+    document.getElementById(name).classList.add('active');
+    document.querySelector(`[data-char="${name}"]`).classList.add('active');
+    window.scrollTo(0, 0);
+  }
+  // activate first tab on load
+  document.addEventListener('DOMContentLoaded', () => switchTab('malevola'));
+
   const KEY = 'bg3-maleviolas-';
 
   document.addEventListener('DOMContentLoaded', () => {
